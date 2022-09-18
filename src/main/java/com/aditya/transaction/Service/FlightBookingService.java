@@ -31,13 +31,18 @@ public class FlightBookingService {
         passengerInfo = passengerInfoRepository.save(passengerInfo);
 
         PaymentInfo paymentInfo = flightBookingRequest.getPaymentInfo();
-        PaymentUtils.validateCreditLimit(paymentInfo.getAccountNo(), passengerInfo.getFare());
+        Boolean checkIfCreditIsEnough = PaymentUtils.validateCreditLimit(paymentInfo.getAccountNo(), passengerInfo.getFare());
+        if(checkIfCreditIsEnough) {
+            paymentInfo.setPassengerId(passengerInfo.getPId());
+            paymentInfo.setAmount(passengerInfo.getFare());
+            paymentInfoRepository.save(paymentInfo);
 
-        paymentInfo.setPassengerId(passengerInfo.getPId());
-        paymentInfo.setAmount(passengerInfo.getFare());
-        paymentInfoRepository.save(paymentInfo);
-
-        return new FlightBookingAck("SUCCESS",
+            return new FlightBookingAck("SUCCESS",
+                    passengerInfo.getFare(),
+                    UUID.randomUUID().toString().split("-")[0],
+                    passengerInfo);
+        }
+        return new FlightBookingAck("Insufficient credits !!!!",
                 passengerInfo.getFare(),
                 UUID.randomUUID().toString().split("-")[0],
                 passengerInfo);
