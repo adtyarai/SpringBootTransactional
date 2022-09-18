@@ -9,6 +9,8 @@ import com.aditya.transaction.Repository.PaymentInfoRepository;
 import com.aditya.transaction.Utils.PaymentUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
@@ -23,6 +25,7 @@ public class FlightBookingService {
     private PaymentInfoRepository paymentInfoRepository;
 
     @Transactional
+            //(readOnly = false, isolation = Isolation.READ_COMMITTED,propagation = Propagation.REQUIRED)
     public FlightBookingAck bookFlightTicket (FlightBookingRequest flightBookingRequest) {
         PassengerInfo passengerInfo = flightBookingRequest.getPassengerInfo();
         passengerInfo = passengerInfoRepository.save(passengerInfo);
