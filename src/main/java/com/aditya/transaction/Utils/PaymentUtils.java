@@ -1,5 +1,6 @@
 package com.aditya.transaction.Utils;
 
+import com.aditya.transaction.Exception.AccountNotFoundException;
 import com.aditya.transaction.Exception.InsufficientCreditException;
 
 import java.util.HashMap;
@@ -16,9 +17,14 @@ public class PaymentUtils {
     }
 
     public static boolean validateCreditLimit (String accNo, double amount) {
-        if(amount > paymentMap.get(accNo)) {
+        Double limit = paymentMap.get(accNo);
+        if (limit == null) {
+            throw new AccountNotFoundException("Unknown account: " + accNo);
+        }
+        if (amount > limit) {
             throw new InsufficientCreditException("Insufficient credits !!!!");
-        } else return true;
+        }
+        return true;
     }
 
 

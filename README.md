@@ -67,7 +67,7 @@ Service/     FlightBookingService — the @Transactional unit of work
 Repository/  PassengerInfoRepository, PaymentInfoRepository
 Entity/      PassengerInfo, PaymentInfo
 DTO/         FlightBookingRequest, FlightBookingAck
-Exception/   InsufficientCreditException
+Exception/   InsufficientCreditException, AccountNotFoundException
 Utils/       PaymentUtils — in-memory credit limits
 ```
 
@@ -79,11 +79,11 @@ Utils/       PaymentUtils — in-memory credit limits
    ```sql
    CREATE DATABASE springBootTransaction;
    ```
-2. Set your datasource in `src/main/resources/application.properties` (or override via environment variables):
+2. Provide database credentials via environment variables (defaults shown in `application.properties`):
    ```
-   spring.datasource.url=jdbc:mysql://localhost:3306/springBootTransaction
-   spring.datasource.username=<your-user>
-   spring.datasource.password=<your-password>
+   export DB_URL=jdbc:mysql://localhost:3306/springBootTransaction
+   export DB_USERNAME=root
+   export DB_PASSWORD=<your-password>
    ```
    `spring.jpa.hibernate.ddl-auto=update` creates the tables on first run.
 3. Run:
