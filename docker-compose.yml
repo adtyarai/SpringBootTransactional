@@ -1,0 +1,16 @@
+# Local MySQL for running the service. Credentials are for local development only.
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: flight_booking
+      MYSQL_USER: booking
+      MYSQL_PASSWORD: booking
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
